@@ -1,7 +1,9 @@
 /*
- * Gherkin layout for rlbaxter
+ * Dilly layout for rlbaxter
  */
+
 #include QMK_KEYBOARD_H
+
 
 enum layer_names {
   _QWERTY,
