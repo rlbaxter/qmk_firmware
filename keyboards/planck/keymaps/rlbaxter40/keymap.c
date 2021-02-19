@@ -1,6 +1,6 @@
 /* Copyright 2015-2017 Jack Humbert
  *
- * Planck 38 key layout for rlbaxter
+ * Planck 40 key layout for rlbaxter
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +21,9 @@
 
 bool is_cmd_tab_active = false;
 uint16_t cmd_tab_timer = 0;
-bool is_cmd_sft_tab_active = false;
-uint16_t cmd_sft_tab_timer = 0;
 
 enum custom_keycodes {
-  CMD_TAB = SAFE_RANGE,
-  CMD_SFT_TAB,
-  WIN_L,
-  WIN_R,
-  BTAB_L,
-  BTAB_R
+  CMD_TAB = SAFE_RANGE
 };
 
 enum planck_layers {
@@ -43,31 +36,35 @@ enum planck_layers {
 
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
-#define EXTRAS LT(_EXTRAS, KC_SPC)
+#define EXTRAS LT(_EXTRAS, KC_BSPC)
 #define A_SFT MT(MOD_LSFT, KC_A)
 #define SC_SFT MT(MOD_RSFT, KC_SCLN)
+#define WIN_L C(KC_LEFT)
+#define WIN_R C(KC_RIGHT)
+#define BTAB_L G(A(KC_LEFT))
+#define BTAB_R G(A(KC_RIGHT))
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_QWERTY] = LAYOUT_planck_grid(
-  XXXXXXX, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,   KC_I,     KC_O,        KC_P,    XXXXXXX,
-  XXXXXXX, A_SFT,   KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,   KC_K,     KC_L,        SC_SFT,  XXXXXXX,
-  XXXXXXX, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,   KC_COMM,  KC_DOT,      KC_ENT,  XXXXXXX,
-  XXXXXXX, KC_LCTL, KC_LALT, KC_LGUI, LOWER,   EXTRAS,  KC_SPC,  RAISE,  KC_BSPC,  CMD_SFT_TAB, CMD_TAB, XXXXXXX
+  XXXXXXX, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,   KC_I,     KC_O,    KC_P,   XXXXXXX,
+  XXXXXXX, A_SFT,   KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,   KC_K,     KC_L,    SC_SFT, XXXXXXX,
+  XXXXXXX, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,   KC_COMM,  KC_DOT,  KC_ENT, XXXXXXX,
+  XXXXXXX, KC_LCTL, KC_LALT, KC_LGUI, LOWER,   EXTRAS,  KC_SPC,  RAISE,  CMD_TAB,  WIN_L,   WIN_R,  XXXXXXX
 ),
 
 [_LOWER] = LAYOUT_planck_grid(
   XXXXXXX, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, XXXXXXX,
   XXXXXXX, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, KC_DQUO, KC_QUES, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, XXXXXXX,
   XXXXXXX, XXXXXXX, KC_MPLY, KC_MUTE, XXXXXXX, XXXXXXX, XXXXXXX, KC_TILD, KC_PIPE, XXXXXXX, _______, XXXXXXX,
-  XXXXXXX, _______, _______, _______, _______, _______, _______, _______, _______, BTAB_L,  BTAB_R, XXXXXXX
+  XXXXXXX, _______, _______, _______, _______, _______, _______, _______, _______, BTAB_L,  BTAB_R,  XXXXXXX
 ),
 
 [_RAISE] = LAYOUT_planck_grid(
   XXXXXXX, KC_1,    KC_2,    KC_3,    KC_4,     KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    XXXXXXX,
   XXXXXXX, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, KC_QUOT, KC_SLSH, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, KC_GRV,  KC_BSLS, XXXXXXX, _______, XXXXXXX,
-  XXXXXXX, _______, _______, _______, _______,  _______, _______, _______, _______, WIN_L,   WIN_R,   XXXXXXX
+  XXXXXXX, _______, _______, _______, _______,  _______, _______, _______, KC_MUTE, KC_VOLD, KC_VOLU, XXXXXXX
 ),
 
 [_ADJUST] = LAYOUT_planck_grid(
@@ -104,48 +101,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         unregister_code(KC_TAB);
       }
       break;
-    case CMD_SFT_TAB:
-      if (record->event.pressed) {
-        if (!is_cmd_sft_tab_active) {
-          is_cmd_sft_tab_active = true;
-          register_code(KC_LGUI);
-          register_code(KC_LSFT);
-        }
-        cmd_sft_tab_timer = timer_read();
-        register_code(KC_TAB);
-      } else {
-        unregister_code(KC_TAB);
-      }
-      break;
-    case WIN_L:
-      if (record->event.pressed) {
-        register_code16(C(KC_LEFT));
-      } else {
-        unregister_code16(C(KC_LEFT));
-      }
-      break;
-    case WIN_R:
-      if (record->event.pressed) {
-        register_code16(C(KC_RGHT));
-      } else {
-        unregister_code16(C(KC_RGHT));
-      }
-      break;
-    case BTAB_L:
-      if (record->event.pressed) {
-        register_code16(G(A(KC_LEFT)));
-      } else {
-        unregister_code16(G(A(KC_LEFT)));
-      }
-      break;
-    case BTAB_R:
-      if (record->event.pressed) {
-        register_code16(G(A(KC_RIGHT)));
-      } else {
-        unregister_code16(G(A(KC_RIGHT)));
-      }
-      break;
-    }
+  }
   return true;
 }
 
@@ -179,13 +135,6 @@ void matrix_scan_user(void) {
     if (timer_elapsed(cmd_tab_timer) > 1000) {
       unregister_code(KC_LGUI);
       is_cmd_tab_active = false;
-    }
-  }
-  if (is_cmd_sft_tab_active) {
-    if (timer_elapsed(cmd_sft_tab_timer) > 1000) {
-      unregister_code(KC_LGUI);
-      unregister_code(KC_LSFT);
-      is_cmd_sft_tab_active = false;
     }
   }
 #ifdef AUDIO_ENABLE
