@@ -36,34 +36,31 @@ enum planck_layers {
 
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
-#define EXTRAS LT(_EXTRAS, KC_BSPC)
-#define A_SFT MT(MOD_LSFT, KC_A)
-#define SC_SFT MT(MOD_RSFT, KC_SCLN)
+// EXTRAS will do a gui + tab on tap, handled by process_record_user
+#define EXTRAS LT(_EXTRAS, KC_F24)
 #define WIN_L C(KC_LEFT)
 #define WIN_R C(KC_RIGHT)
-#define BTAB_L G(A(KC_LEFT))
-#define BTAB_R G(A(KC_RIGHT))
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_QWERTY] = LAYOUT_planck_grid(
-  XXXXXXX, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,   KC_I,     KC_O,    KC_P,   XXXXXXX,
-  XXXXXXX, A_SFT,   KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,   KC_K,     KC_L,    SC_SFT, XXXXXXX,
-  XXXXXXX, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,   KC_COMM,  KC_DOT,  KC_ENT, XXXXXXX,
-  XXXXXXX, KC_LCTL, KC_LALT, KC_LGUI, LOWER,   EXTRAS,  KC_SPC,  RAISE,  CMD_TAB,  WIN_L,   WIN_R,  XXXXXXX
+  XXXXXXX, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,   KC_I,     KC_O,   KC_P,    XXXXXXX,
+  XXXXXXX, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,   KC_K,     KC_L,   KC_BSPC, XXXXXXX,
+  XXXXXXX, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,   KC_COMM,  KC_DOT, KC_ENT,  XXXXXXX,
+  XXXXXXX, KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_LSFT, KC_SPC,  RAISE,  EXTRAS,   WIN_L,  WIN_R,   XXXXXXX
 ),
 
 [_LOWER] = LAYOUT_planck_grid(
   XXXXXXX, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, XXXXXXX,
-  XXXXXXX, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, KC_DQUO, KC_QUES, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, XXXXXXX,
-  XXXXXXX, XXXXXXX, KC_MPLY, KC_MUTE, XXXXXXX, XXXXXXX, XXXXXXX, KC_TILD, KC_PIPE, XXXXXXX, _______, XXXXXXX,
-  XXXXXXX, _______, _______, _______, _______, _______, _______, _______, _______, BTAB_L,  BTAB_R,  XXXXXXX
+  XXXXXXX, KC_TAB,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_QUES, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, XXXXXXX,
+  XXXXXXX, KC_ESC,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_DQUO, KC_COLN, KC_TILD, KC_PIPE, _______, XXXXXXX,
+  XXXXXXX, _______, _______, _______, _______, _______, _______, _______, KC_MPLY, KC_MPRV, KC_MNXT,  XXXXXXX
 ),
 
 [_RAISE] = LAYOUT_planck_grid(
   XXXXXXX, KC_1,    KC_2,    KC_3,    KC_4,     KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    XXXXXXX,
-  XXXXXXX, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, KC_QUOT, KC_SLSH, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, XXXXXXX,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, KC_GRV,  KC_BSLS, XXXXXXX, _______, XXXXXXX,
+  XXXXXXX, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, XXXXXXX, KC_SLSH, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, KC_QUOT, KC_SCLN, KC_GRV,  KC_BSLS, _______, XXXXXXX,
   XXXXXXX, _______, _______, _______, _______,  _______, _______, _______, KC_MUTE, KC_VOLD, KC_VOLU, XXXXXXX
 ),
 
@@ -75,10 +72,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 [_EXTRAS] = LAYOUT_planck_grid(
-  XXXXXXX,  KC_TAB,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PMNS, KC_P7,   KC_P8,   KC_P9,   KC_BSPC, XXXXXXX,
-  XXXXXXX,  KC_ESC,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PPLS, KC_P4,   KC_P5,   KC_P6,   XXXXXXX, XXXXXXX,
-  XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PAST, KC_P1,   KC_P2,   KC_P3,   XXXXXXX, XXXXXXX,
-  XXXXXXX,  XXXXXXX, XXXXXXX, _______, _______, _______, KC_PSLS, KC_P0,   KC_PDOT, KC_PEQL, XXXXXXX, XXXXXXX
+  XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PPLS, KC_P7,   KC_P8,   KC_P9,   XXXXXXX,
+  XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PMNS, KC_P4,   KC_P5,   KC_P6,   XXXXXXX,
+  XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PAST, KC_P1,   KC_P2,   KC_P3,   XXXXXXX,
+  XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PSLS, _______, KC_P0,   KC_PDOT, XXXXXXX
 )
 
 };
@@ -89,6 +86,26 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
+    case EXTRAS:
+      if (record->tap.count > 0) {
+        // tap - here you handle your macro
+        // currently have CMD TAB on an LT with EXTRAS
+        if (record->event.pressed) {
+          if (!is_cmd_tab_active) {
+            is_cmd_tab_active = true;
+            register_code(KC_LGUI);
+          }
+          cmd_tab_timer = timer_read();
+          register_code(KC_TAB);
+        } else {
+          unregister_code(KC_TAB);
+        }
+        return false; // disable the default action
+      } else {
+        // hold - use the default LT hold action
+        return true;
+      }
+      break;
     case CMD_TAB:
       if (record->event.pressed) {
         if (!is_cmd_tab_active) {
