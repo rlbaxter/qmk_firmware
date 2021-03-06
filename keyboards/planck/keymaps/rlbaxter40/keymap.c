@@ -19,13 +19,6 @@
 #include QMK_KEYBOARD_H
 #include "muse.h"
 
-bool is_cmd_tab_active = false;
-uint16_t cmd_tab_timer = 0;
-
-enum custom_keycodes {
-  CMD_TAB = SAFE_RANGE
-};
-
 enum planck_layers {
   _QWERTY,
   _LOWER,
@@ -36,8 +29,7 @@ enum planck_layers {
 
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
-// EXTRAS will do a gui + tab on tap, handled by process_record_user
-#define EXTRAS LT(_EXTRAS, KC_F24)
+#define EXTRAS LT(_EXTRAS, KC_TAB)
 #define WIN_L C(KC_LEFT)
 #define WIN_R C(KC_RIGHT)
 
@@ -52,15 +44,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_LOWER] = LAYOUT_planck_grid(
   XXXXXXX, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, XXXXXXX,
-  XXXXXXX, KC_TAB,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_QUES, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, XXXXXXX,
-  XXXXXXX, KC_ESC,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_DQUO, KC_COLN, KC_TILD, KC_PIPE, _______, XXXXXXX,
-  XXXXXXX, _______, _______, _______, _______, _______, _______, _______, KC_MPLY, KC_MPRV, KC_MNXT,  XXXXXXX
+  XXXXXXX, KC_LEFT, KC_DOWN, KC_UP,  KC_RIGHT, XXXXXXX, KC_QUES, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_DQUO, KC_COLN, KC_TILD, KC_PIPE, KC_ESC,  XXXXXXX,
+  XXXXXXX, _______, _______, _______, _______, _______, _______, _______, KC_MPLY, KC_MPRV, KC_MNXT, XXXXXXX
 ),
 
 [_RAISE] = LAYOUT_planck_grid(
   XXXXXXX, KC_1,    KC_2,    KC_3,    KC_4,     KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    XXXXXXX,
   XXXXXXX, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, XXXXXXX, KC_SLSH, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, XXXXXXX,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, KC_QUOT, KC_SCLN, KC_GRV,  KC_BSLS, _______, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, KC_QUOT, KC_SCLN, KC_GRV,  KC_BSLS, KC_ESC,  XXXXXXX,
   XXXXXXX, _______, _______, _______, _______,  _______, _______, _______, KC_MUTE, KC_VOLD, KC_VOLU, XXXXXXX
 ),
 
@@ -82,44 +74,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case EXTRAS:
-      if (record->tap.count > 0) {
-        // tap - here you handle your macro
-        // currently have CMD TAB on an LT with EXTRAS
-        if (record->event.pressed) {
-          if (!is_cmd_tab_active) {
-            is_cmd_tab_active = true;
-            register_code(KC_LGUI);
-          }
-          cmd_tab_timer = timer_read();
-          register_code(KC_TAB);
-        } else {
-          unregister_code(KC_TAB);
-        }
-        return false; // disable the default action
-      } else {
-        // hold - use the default LT hold action
-        return true;
-      }
-      break;
-    case CMD_TAB:
-      if (record->event.pressed) {
-        if (!is_cmd_tab_active) {
-          is_cmd_tab_active = true;
-          register_code(KC_LGUI);
-        }
-        cmd_tab_timer = timer_read();
-        register_code(KC_TAB);
-      } else {
-        unregister_code(KC_TAB);
-      }
-      break;
-  }
-  return true;
 }
 
 bool muse_mode = false;
@@ -148,12 +102,6 @@ void dip_switch_update_user(uint8_t index, bool active) {
 }
 
 void matrix_scan_user(void) {
-  if (is_cmd_tab_active) {
-    if (timer_elapsed(cmd_tab_timer) > 1000) {
-      unregister_code(KC_LGUI);
-      is_cmd_tab_active = false;
-    }
-  }
 #ifdef AUDIO_ENABLE
     if (muse_mode) {
         if (muse_counter == 0) {
