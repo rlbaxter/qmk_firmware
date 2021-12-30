@@ -8,44 +8,53 @@ enum layer_names {
   _RAISE,
   _LOWER,
   _ADJUST,
-  _EXTRAS
 };
 
-#define LSHIFTA MT(MOD_LSFT, KC_A)
 #define LCTLS MT(MOD_LCTL, KC_S)
 #define LALTD MT(MOD_LALT, KC_D)
-#define LOSF MT(MOD_LGUI, KC_F)
-#define ROSJ MT(MOD_LGUI, KC_J)
+#define LSFTF MT(MOD_LSFT, KC_F)
+#define LGUIG MT(MOD_LGUI, KC_G)
+#define RGUIH MT(MOD_RGUI, KC_H)
+#define RSFTJ MT(MOD_RSFT, KC_J)
 #define RALTK MT(MOD_LALT, KC_K)
 #define RCTLL MT(MOD_LCTL, KC_L)
-#define RSHIFTE MT(MOD_LSFT, KC_ENT)
-#define RAISE LT(_RAISE, KC_N)
-#define LOWER LT(_LOWER, KC_V)
-#define EXTRAS LT(_EXTRAS, KC_B)
+#define RAISE LT(_RAISE, KC_BSPC)
+#define LOWER LT(_LOWER, KC_A)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_QWERTY] = LAYOUT_ortho_3x10(
-    KC_Q,    KC_W,   KC_E,    KC_R,    KC_T,    KC_Y,     KC_U,   KC_I,    KC_O,    KC_P,
-    LSHIFTA, LCTLS,  LALTD,   LOSF,    KC_G,    KC_H,     ROSJ,   RALTK,   RCTLL,   RSHIFTE,
-    KC_Z,    KC_X,   KC_C,    LOWER,   EXTRAS,  KC_SPC,   RAISE,  KC_M,    KC_COMM, KC_DOT
+    KC_Q,  KC_W,  KC_E,  KC_R,  KC_T,  KC_Y,  KC_U,  KC_I,    KC_O,   KC_P,
+    LOWER, LCTLS, LALTD, LSFTF, LGUIG, RGUIH, RSFTJ, RALTK,   RCTLL,  RAISE,
+    KC_Z,  KC_X,  KC_C,  KC_V,  KC_B,  KC_N,  KC_M,  KC_COMM, KC_DOT, KC_ENT
   ),
 
   [_RAISE] = LAYOUT_ortho_3x10(
     KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-    KC_LEFT, KC_DOWN, KC_UP,  KC_RIGHT, KC_GRV,  KC_SLSH, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, KC_BSLS, KC_QUOT, KC_SCLN
+    _______, KC_MUTE, KC_EQL,  KC_MINS, KC_SLSH, KC_LEFT, KC_DOWN, KC_UP,  KC_RIGHT, _______,
+    XXXXXXX, KC_VOLD, KC_VOLU, KC_BSLS, KC_GRV,  KC_QUOT, KC_SCLN, KC_LBRC, KC_RBRC, KC_ESC
   ),
 
   [_LOWER] = LAYOUT_ortho_3x10(
     KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
-    KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, KC_TILD, KC_QUES, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR,
-    KC_MPLY, KC_MUTE, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX, KC_PIPE, KC_DQUO, KC_COLN
+    _______, KC_MPLY, KC_PLUS, KC_UNDS, KC_QUES, KC_LEFT, KC_DOWN, KC_UP,  KC_RIGHT, _______,
+    XXXXXXX, KC_MPRV, KC_MNXT, KC_PIPE, KC_TILD, KC_DQUO, KC_COLN, KC_LCBR, KC_RCBR, KC_ESC
   ),
 
-  [_EXTRAS] = LAYOUT_ortho_3x10(
-    KC_TAB,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   XXXXXXX, XXXXXXX, KC_BSPC,
-    KC_ESC,  KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX, XXXXXXX, XXXXXXX,
-    RESET,   XXXXXXX, XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+  [_ADJUST] = LAYOUT_ortho_3x10(
+    RESET,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   XXXXXXX, XXXXXXX, XXXXXXX,
+    XXXXXXX, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
   )
 };
+
+const uint16_t PROGMEM nu_space[] = {KC_N, KC_U, COMBO_END};
+const uint16_t PROGMEM mu_tab[] = {KC_M, KC_U, COMBO_END};
+combo_t key_combos[COMBO_COUNT] = {
+    COMBO(nu_space, KC_SPC),
+    COMBO(mu_tab, KC_TAB),
+};
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+}
