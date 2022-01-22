@@ -8,6 +8,10 @@ enum layers_names {
   _EXTRAS
 };
 
+enum my_keycodes {
+  PLO_SCR = SAFE_RANGE,
+};
+
 #define LCTLS MT(MOD_LCTL, KC_S)
 #define LALTD MT(MOD_LALT, KC_D)
 #define LSFTF MT(MOD_LSFT, KC_F)
@@ -55,7 +59,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_EXTRAS] = LAYOUT(
   KC_PLUS, KC_7, KC_8, KC_9,   XXXXXXX, KC_WH_L, KC_WH_D, KC_WH_U,   KC_WH_R,   XXXXXXX,
   KC_MINS, KC_4, KC_5, KC_6,   XXXXXXX, XXXXXXX, KC_BTN1, KC_BTN3,   KC_BTN2,   XXXXXXX,
-  KC_ASTR, KC_1, KC_2, KC_3,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX,   XXXXXXX,
+  KC_ASTR, KC_1, KC_2, KC_3,   XXXXXXX, XXXXXXX, PLO_SCR, XXXXXXX,   XXXXXXX,   XXXXXXX,
   KC_SLSH, KC_0, KC_0, KC_DOT, XXXXXXX, XXXXXXX, XXXXXXX, _______,   _______,   _______
 )
 
@@ -63,4 +67,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case PLO_SCR:
+      if (record->event.pressed) {
+        // tap num lock twice quickly to toggle scroll mode
+        tap_code(KC_NUM);
+        tap_code(KC_NUM);
+      }
+      return false; // Skip all further processing of this key
+    default:
+      return true; // Process all other keycodes normally
+  }
 }
