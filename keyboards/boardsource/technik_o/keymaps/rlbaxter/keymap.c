@@ -24,6 +24,14 @@ enum planck_layers {
   _EXTRAS
 };
 
+#define LCTLS MT(MOD_LCTL, KC_S)
+#define LALTD MT(MOD_LALT, KC_D)
+#define LSFTF MT(MOD_LSFT, KC_F)
+#define LGUIG MT(MOD_LGUI, KC_G)
+#define RGUIH MT(MOD_RGUI, KC_H)
+#define RSFTJ MT(MOD_RSFT, KC_J)
+#define RALTK MT(MOD_LALT, KC_K)
+#define RCTLL MT(MOD_LCTL, KC_L)
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 #define EXTRAS LT(_EXTRAS, KC_TAB)
@@ -34,7 +42,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_QWERTY] = LAYOUT_ortho_4x12(
   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    XXXXXXX, XXXXXXX, KC_Y,    KC_U,   KC_I,     KC_O,   KC_P,
-  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    XXXXXXX, XXXXXXX, KC_H,    KC_J,   KC_K,     KC_L,   KC_BSPC,
+  KC_A,    LCTLS,   LALTD,   LSFTF,   LGUIG,   XXXXXXX, XXXXXXX, RGUIH,   RSFTJ,  RALTK,    RCTLL,  KC_BSPC,
   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    XXXXXXX, XXXXXXX, KC_N,    KC_M,   KC_COMM,  KC_DOT, KC_ENT,
   KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_LSFT, XXXXXXX, XXXXXXX, KC_SPC,  RAISE,  EXTRAS,   WIN_L,  WIN_R
 ),
