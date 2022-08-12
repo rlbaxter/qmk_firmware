@@ -8,10 +8,6 @@ enum layers_names {
   _EXTRAS
 };
 
-enum my_keycodes {
-  PLO_SCR = SAFE_RANGE,
-};
-
 #define LCTLS MT(MOD_LCTL, KC_S)
 #define LALTD MT(MOD_LALT, KC_D)
 #define LSFTF MT(MOD_LSFT, KC_F)
@@ -38,28 +34,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_LOWER] = LAYOUT(
   KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
   XXXXXXX, XXXXXXX, KC_PLUS, KC_UNDS, KC_QUES, KC_LEFT, KC_DOWN, KC_UP,  KC_RIGHT, _______,
-  XXXXXXX, XXXXXXX, XXXXXXX, KC_PIPE, KC_TILD, KC_DQUO, KC_COLN, KC_LCBR, KC_RCBR, KC_ESC,
-  _______, _______, _______, _______, _______, _______, _______, KC_MPLY, KC_MPRV, KC_MNXT
+  KC_MPLY, KC_MPRV, KC_MNXT, KC_PIPE, KC_TILD, KC_DQUO, KC_COLN, KC_LCBR, KC_RCBR, KC_ESC,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
 [_RAISE] = LAYOUT(
   KC_1,    KC_2,    KC_3,    KC_4,     KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
   XXXXXXX, XXXXXXX, KC_EQL,  KC_MINS,  KC_SLSH, KC_LEFT, KC_DOWN, KC_UP,  KC_RIGHT, _______,
-  XXXXXXX, XXXXXXX, XXXXXXX, KC_BSLS,  KC_GRV,  KC_QUOT, KC_SCLN, KC_LBRC, KC_RBRC, KC_ESC,
-  _______, _______, _______, _______,  _______, _______, _______, KC_MUTE, KC_VOLD, KC_VOLU
+  KC_MUTE, KC_VOLD, KC_VOLU, KC_BSLS,  KC_GRV,  KC_QUOT, KC_SCLN, KC_LBRC, KC_RBRC, KC_ESC,
+  _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______
 ),
 
 [_ADJUST] = LAYOUT(
-  RESET,   RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, KC_DEL,
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_F11,  KC_F12,
+  KC_F11,  KC_F12,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RESET,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   _______, _______, _______, _______, _______, _______, _______, _______, XXXXXXX, XXXXXXX
 ),
 
 [_EXTRAS] = LAYOUT(
   KC_PLUS, KC_7, KC_8, KC_9,   XXXXXXX, KC_WH_L, KC_WH_D, KC_WH_U,   KC_WH_R,   XXXXXXX,
   KC_MINS, KC_4, KC_5, KC_6,   XXXXXXX, XXXXXXX, KC_BTN1, KC_BTN3,   KC_BTN2,   XXXXXXX,
-  KC_ASTR, KC_1, KC_2, KC_3,   XXXXXXX, XXXXXXX, PLO_SCR, XXXXXXX,   XXXXXXX,   XXXXXXX,
+  KC_ASTR, KC_1, KC_2, KC_3,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX,   XXXXXXX,
   KC_SLSH, KC_0, KC_0, KC_DOT, XXXXXXX, XXXXXXX, XXXXXXX, _______,   _______,   _______
 )
 
@@ -67,18 +63,4 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case PLO_SCR:
-      if (record->event.pressed) {
-        // tap num lock twice quickly to toggle scroll mode
-        tap_code(KC_NUM);
-        tap_code(KC_NUM);
-      }
-      return false; // Skip all further processing of this key
-    default:
-      return true; // Process all other keycodes normally
-  }
 }
