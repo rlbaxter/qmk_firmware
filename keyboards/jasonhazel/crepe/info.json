@@ -1,0 +1,9 @@
+{
+  "keyboard_name": "CREPE",
+  "manufacturer": "jasonhazel",
+  "usb": {
+    "vid": "0x4A48",
+    "pid": "0x4350",
+    "device_version": "0.0.1"
+  }
+}
