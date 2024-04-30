@@ -22,9 +22,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 enum layers_names {
   _QWERTY,
+  _COLEMAK,
   _RAISE,
   _LOWER,
   _ADJUST
+};
+
+enum keycodes {
+  QWERTY = SAFE_RANGE,
+  COLEMAK
 };
 
 #define LCTLS MT(MOD_LCTL, KC_S)
@@ -35,6 +41,16 @@ enum layers_names {
 #define RSFTJ MT(MOD_RSFT, KC_J)
 #define RALTK MT(MOD_LALT, KC_K)
 #define RCTLL MT(MOD_LCTL, KC_L)
+
+#define LCTLR MT(MOD_LCTL, KC_R)
+#define LALTS MT(MOD_LALT, KC_S)
+#define LSFTT MT(MOD_LSFT, KC_T)
+// #define LGUIG MT(MOD_LGUI, KC_G)
+#define RGUIM MT(MOD_RGUI, KC_M)
+#define RSFTN MT(MOD_RSFT, KC_N)
+#define RALTE MT(MOD_LALT, KC_E)
+#define RCTLI MT(MOD_LCTL, KC_I)
+
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 
@@ -43,6 +59,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,   KC_Y,    KC_U,   KC_I,    KC_O,   KC_P,    XXXXXXX,
         XXXXXXX, KC_A,    LCTLS,   LALTD,   LSFTF,   LGUIG,  RGUIH,   RSFTJ,  RALTK,   RCTLL,  KC_BSPC, XXXXXXX,
         XXXXXXX, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,   KC_M,   KC_COMM, KC_DOT, KC_ENT,  XXXXXXX,
+                                   KC_LGUI, LOWER,   KC_LSFT, KC_SPC, RAISE,  KC_TAB
+    ),
+
+    [_COLEMAK] = LAYOUT_split_3x6_3(
+        XXXXXXX, KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,   KC_L,   KC_U,    KC_Y,   KC_BSPC, XXXXXXX,
+        XXXXXXX, KC_A,    LCTLR,   LALTS,   LSFTT,   LGUIG,   RGUIM,  RSFTN,  RALTE,   RCTLI,  KC_O,    XXXXXXX,
+        XXXXXXX, KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    KC_K,   KC_H,   KC_COMM, KC_DOT, KC_ENT,  XXXXXXX,
                                    KC_LGUI, LOWER,   KC_LSFT, KC_SPC, RAISE,  KC_TAB
     ),
 
@@ -61,15 +84,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_ADJUST] = LAYOUT_split_3x6_3(
-        XXXXXXX, RESET,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_DEL, XXXXXXX,
-        XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10, XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_F11,  KC_F12, XXXXXXX,
+        XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  XXXXXXX,
+        XXXXXXX, KC_F11,  KC_F12,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QWERTY,  COLEMAK, XXXXXXX, QK_BOOT, XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,
                                    _______, _______, _______, _______, _______, _______
     ),
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case QWERTY:
+      if (record->event.pressed) {
+        set_single_persistent_default_layer(_QWERTY);
+      }
+      return false;
+      break;
+    case
+    :
+      if (record->event.pressed) {
+        set_single_persistent_default_layer(_COLEMAK);
+      }
+      return false;
+      break;
+  }
+  return true;
 }
 
 #ifdef OLED_ENABLE
@@ -85,7 +127,10 @@ void oled_render_layer_state(void) {
     oled_write_P(PSTR("Layer: "), false);
     switch (layer) {
         case _QWERTY:
-            oled_write_ln_P(PSTR("Default"), false);
+            oled_write_ln_P(PSTR("QWERTY"), false);
+            break;
+        case _COLEMAK:
+            oled_write_ln_P(PSTR("COLEMAK"), false);
             break;
         case _LOWER:
             oled_write_ln_P(PSTR("Lower"), false);
@@ -162,10 +207,10 @@ bool oled_task_user(void) {
     return false;
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (record->event.pressed) {
-    set_keylog(keycode, record);
-  }
-  return true;
-}
+// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+//   if (record->event.pressed) {
+//     set_keylog(keycode, record);
+//   }
+//   return true;
+// }
 #endif // OLED_ENABLE

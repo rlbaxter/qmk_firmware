@@ -1,6 +1,4 @@
-/* Copyright 2015-2017 Jack Humbert
- *
- * Planck 40 key layout for rlbaxter
+/* Copyright 2015-2021 Jack Humbert
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,14 +28,15 @@ enum planck_layers {
   _EXTRAS
 };
 
-#define LCTLS MT(MOD_LCTL, KC_S)
-#define LALTD MT(MOD_LALT, KC_D)
-#define LSFTF MT(MOD_LSFT, KC_F)
+#define LCTLR MT(MOD_LCTL, KC_R)
+#define LALTS MT(MOD_LALT, KC_S)
+#define LSFTT MT(MOD_LSFT, KC_T)
 #define LGUIG MT(MOD_LGUI, KC_G)
-#define RGUIH MT(MOD_RGUI, KC_H)
-#define RSFTJ MT(MOD_RSFT, KC_J)
-#define RALTK MT(MOD_LALT, KC_K)
-#define RCTLL MT(MOD_LCTL, KC_L)
+#define RGUIM MT(MOD_RGUI, KC_M)
+#define RSFTN MT(MOD_RSFT, KC_N)
+#define RALTE MT(MOD_LALT, KC_E)
+#define RCTLI MT(MOD_LCTL, KC_Io
+
 
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
@@ -46,8 +45,7 @@ enum planck_layers {
 #define WIN_R C(KC_RIGHT)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-
-[_COLEMAK] = LAYOUT_planck_grid(
+    [_COLEMAK] = LAYOUT_planck_grid(
   KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    XXXXXXX, XXXXXXX, KC_J,    KC_L,   KC_U,     KC_Y,   KC_BSPC,
   KC_A,    LCTLR,   LALTS,   LSFTT,   LGUIG,   XXXXXXX, XXXXXXX, RGUIM,   RSFTN,  RALTE,    RCTLI,  KC_O,
   KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    XXXXXXX, XXXXXXX, KC_K,    KC_H,   KC_COMM,  KC_DOT, KC_ENT,
@@ -81,7 +79,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PAST, KC_P1,   KC_P2,   KC_P3,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PSLS, _______, KC_P0,   KC_PDOT
 )
-
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
@@ -96,26 +93,6 @@ uint16_t muse_tempo = 50;
 
 bool dip_switch_update_user(uint8_t index, bool active) {
     switch (index) {
-        case 0: {
-#ifdef AUDIO_ENABLE
-            static bool play_sound = false;
-#endif
-            if (active) {
-#ifdef AUDIO_ENABLE
-                if (play_sound) { PLAY_SONG(plover_song); }
-#endif
-                layer_on(_ADJUST);
-            } else {
-#ifdef AUDIO_ENABLE
-                if (play_sound) { PLAY_SONG(plover_gb_song); }
-#endif
-                layer_off(_ADJUST);
-            }
-#ifdef AUDIO_ENABLE
-            play_sound = true;
-#endif
-            break;
-        }
         case 1:
             if (active) {
                 muse_mode = true;
@@ -156,4 +133,3 @@ bool music_mask_user(uint16_t keycode) {
       return true;
   }
 }
-
