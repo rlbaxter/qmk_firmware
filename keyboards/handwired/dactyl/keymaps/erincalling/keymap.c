@@ -39,7 +39,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   COLON_EQ,     KC_A,     KC_O,     KC_E,     KC_U,      KC_I,
    KC_LSFT,  KC_SCLN,     KC_Q,     KC_J,     KC_K,      KC_X,
    KC_HOME,   KC_GRV,   KC_EQL,  KC_LEFT,  KC_RGHT,
-                                                    KC_LCTRL,   KC_LALT,
+                                                    KC_LCTL,    KC_LALT,
                                                                MO(CONT),
                                           KC_BSPC,    KC_DEL,   KC_LGUI,
         // right hand
@@ -149,12 +149,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   return true;
 }
-
-// Runs just one time when the keyboard initializes.
-void matrix_init_user(void) {
-
-};
-
-
-// Runs constantly in the background, in a loop.
-void matrix_scan_user(void) {};
