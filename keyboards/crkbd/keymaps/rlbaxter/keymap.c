@@ -21,31 +21,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 
 enum layers_names {
-  _QWERTY,
-  _COLEMAK,
+  _CANARY,
   _RAISE,
   _LOWER,
   _ADJUST
 };
 
-enum keycodes {
-  QWERTY = SAFE_RANGE,
-  COLEMAK
-};
-
-#define LCTLS MT(MOD_LCTL, KC_S)
-#define LALTD MT(MOD_LALT, KC_D)
-#define LSFTF MT(MOD_LSFT, KC_F)
-#define LGUIG MT(MOD_LGUI, KC_G)
-#define RGUIH MT(MOD_RGUI, KC_H)
-#define RSFTJ MT(MOD_RSFT, KC_J)
-#define RALTK MT(MOD_LALT, KC_K)
-#define RCTLL MT(MOD_LCTL, KC_L)
-
 #define LCTLR MT(MOD_LCTL, KC_R)
 #define LALTS MT(MOD_LALT, KC_S)
 #define LSFTT MT(MOD_LSFT, KC_T)
-// #define LGUIG MT(MOD_LGUI, KC_G)
+#define LGUIG MT(MOD_LGUI, KC_G)
 #define RGUIM MT(MOD_RGUI, KC_M)
 #define RSFTN MT(MOD_RSFT, KC_N)
 #define RALTE MT(MOD_LALT, KC_E)
@@ -55,37 +40,30 @@ enum keycodes {
 #define RAISE MO(_RAISE)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [_QWERTY] = LAYOUT_split_3x6_3(
-        XXXXXXX, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,   KC_Y,    KC_U,   KC_I,    KC_O,   KC_P,    XXXXXXX,
-        XXXXXXX, KC_A,    LCTLS,   LALTD,   LSFTF,   LGUIG,  RGUIH,   RSFTJ,  RALTK,   RCTLL,  KC_BSPC, XXXXXXX,
-        XXXXXXX, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,   KC_M,   KC_COMM, KC_DOT, KC_ENT,  XXXXXXX,
-                                   KC_LGUI, LOWER,   KC_LSFT, KC_SPC, RAISE,  KC_TAB
-    ),
-
-    [_COLEMAK] = LAYOUT_split_3x6_3(
-        XXXXXXX, KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,   KC_L,   KC_U,    KC_Y,   KC_BSPC, XXXXXXX,
-        XXXXXXX, KC_A,    LCTLR,   LALTS,   LSFTT,   LGUIG,   RGUIM,  RSFTN,  RALTE,   RCTLI,  KC_O,    XXXXXXX,
-        XXXXXXX, KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    KC_K,   KC_H,   KC_COMM, KC_DOT, KC_ENT,  XXXXXXX,
-                                   KC_LGUI, LOWER,   KC_LSFT, KC_SPC, RAISE,  KC_TAB
+    [_CANARY] = LAYOUT_split_3x6_3(
+        XXXXXXX, KC_W,    KC_L,    KC_Y,    KC_P,    KC_B,   KC_Z,    KC_F,   KC_O,    KC_U,   KC_BSPC, XXXXXXX,
+        XXXXXXX, KC_C,    LCTLR,   LALTS,   LSFTT,   LGUIG,  RGUIM,   RSFTN,  RALTE,   RCTLI,  KC_A,    XXXXXXX,
+        XXXXXXX, KC_Q,    KC_J,    KC_V,    KC_D,    KC_K,   KC_X,    KC_H,   KC_COMM, KC_DOT, KC_ENT,  XXXXXXX,
+                                   KC_LGUI, LOWER,   KC_SPC, KC_LSFT, RAISE,  KC_TAB
     ),
 
     [_RAISE] = LAYOUT_split_3x6_3(
-        XXXXXXX, KC_1,    KC_2,    KC_3,    KC_4,     KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, KC_EQL,  KC_MINS,  KC_SLSH, KC_LEFT, KC_DOWN, KC_UP,  KC_RIGHT, _______, XXXXXXX,
-        XXXXXXX, KC_MUTE, KC_VOLD, KC_VOLU, KC_BSLS,  KC_GRV,  KC_QUOT, KC_SCLN, KC_LBRC, KC_RBRC, KC_ESC,  XXXXXXX,
+        XXXXXXX, KC_1,    KC_2,    KC_3,    KC_4,     KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,   XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, KC_EQL,  KC_MINS,  KC_SLSH, KC_LEFT, KC_DOWN, KC_UP,  KC_RIGHT, KC_DEL, XXXXXXX,
+        XXXXXXX, KC_MUTE, KC_VOLD, KC_VOLU, KC_BSLS,  KC_GRV,  KC_QUOT, KC_SCLN, KC_LBRC, KC_RBRC, KC_ESC, XXXXXXX,
                                    _______,  _______,  _______, _______, _______, _______
     ),
 
     [_LOWER] = LAYOUT_split_3x6_3(
         XXXXXXX, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, XXXXXXX,
-        XXXXXXX, KC_TAB,  XXXXXXX, KC_PLUS, KC_UNDS, KC_QUES, KC_LEFT, KC_DOWN, KC_UP,  KC_RIGHT, _______, XXXXXXX,
+        XXXXXXX, KC_TAB,  XXXXXXX, KC_PLUS, KC_UNDS, KC_QUES, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_PSCR, XXXXXXX,
         XXXXXXX, KC_MPLY, KC_MPRV, KC_MNXT, KC_PIPE, KC_TILD, KC_DQUO, KC_COLN, KC_LCBR, KC_RCBR, KC_ESC,  XXXXXXX,
                                    _______, _______, _______, _______, _______, _______
     ),
 
     [_ADJUST] = LAYOUT_split_3x6_3(
         XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  XXXXXXX,
-        XXXXXXX, KC_F11,  KC_F12,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QWERTY,  COLEMAK, XXXXXXX, QK_BOOT, XXXXXXX,
+        XXXXXXX, KC_F11,  KC_F12,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,
                                    _______, _______, _______, _______, _______, _______
     ),
@@ -93,25 +71,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case QWERTY:
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_QWERTY);
-      }
-      return false;
-      break;
-    case
-    :
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_COLEMAK);
-      }
-      return false;
-      break;
-  }
-  return true;
 }
 
 #ifdef OLED_ENABLE
@@ -126,11 +85,8 @@ void oled_render_layer_state(void) {
     uint8_t layer = biton32(layer_state);
     oled_write_P(PSTR("Layer: "), false);
     switch (layer) {
-        case _QWERTY:
-            oled_write_ln_P(PSTR("QWERTY"), false);
-            break;
-        case _COLEMAK:
-            oled_write_ln_P(PSTR("COLEMAK"), false);
+        case _CANARY:
+            oled_write_ln_P(PSTR("Canary"), false);
             break;
         case _LOWER:
             oled_write_ln_P(PSTR("Lower"), false);
